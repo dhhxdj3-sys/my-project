@@ -2,8 +2,10 @@
 <nav>
     <h2>我的空间</h2>
     <div>
-        <span>首页</span>
-        <span>文章</span>
+<router-link to="/">
+    首页</router-link>
+    <router-link to="/blog">
+        文章</router-link>
         <span>项目</span>
         <span>技能</span>
         </div>
@@ -18,4 +20,13 @@
     span{
         margin:0 10px;
     }
+    router-link{
+    margin:0 10px;
+    text-decoration:none;
+    color:black;
+}
+nav a,
+nav span{
+    margin:0 10px;
+}
     </style>
