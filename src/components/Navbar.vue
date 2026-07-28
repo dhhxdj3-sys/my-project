@@ -7,7 +7,8 @@
     <router-link to="/blog">
         文章</router-link>
         <span>项目</span>
-        <span>技能</span>
+        <router-link to="/skill">
+            技能</router-link>
         </div>
     </nav>
     </template>

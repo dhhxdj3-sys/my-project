@@ -2,19 +2,19 @@
 const skills = [
     {
         name: 'HTMl',
-        level: '✨✨✨✨'
+        level: 4
     },
     {
         name: 'CSS',
-        level: '✨'
+        level: 1
     },
     {
         name: 'JavaScript',
-        level: '✨✨✨'
+        level: 2
     },
    {
     name: 'vue3',
-    level: '✨'
+    level: 2
 
    }
     
@@ -32,7 +32,7 @@ const skills = [
             {{ skill.name }}
             </h3>
             <p>
-                {{ skill.level }}
+             {{ "✨".repeat(skill.level) }}
                 </p>
                 </div>
                 </div>
