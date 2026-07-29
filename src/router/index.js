@@ -2,6 +2,10 @@ import {createRouter, createWebHistory} from 'vue-router'
 import Home from '../views/Home.vue'
 import Blog from '../views/Blog.vue'
 import Skill from '../views/Skill.vue'
+import Project from '../views/Project.vue'
+import StudentSystem from '../components/StudentSystem.vue'
+import ShoopingList from '../components/ShooppingList.vue'
+import GuessNumber from '@/components/GuessNumber.vue'
 const router = createRouter({
     history:createWebHistory(),
     routes:[
@@ -16,7 +20,24 @@ const router = createRouter({
         {
             path:"/skill",
             component:Skill
-        }
+        },
+        {
+            path:"/Project",
+            component:Project
+        },
+       {
+        path:"/project/student",
+        component:StudentSystem
+       },
+       {
+        path:"/project/shopping",
+        component:ShoopingList
+      },
+      {
+        path:"/project/guess",
+        component:GuessNumber
+      }
+       
     ]
 })
 export default router

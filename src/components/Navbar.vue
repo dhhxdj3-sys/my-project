@@ -6,7 +6,9 @@
     首页</router-link>
     <router-link to="/blog">
         文章</router-link>
-        <span>项目</span>
+       <router-link to="/Project">
+        项目
+    </router-link>
         <router-link to="/skill">
             技能</router-link>
         </div>
