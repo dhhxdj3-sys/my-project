@@ -2,16 +2,16 @@
 import ProjectCard  from '@/components/ProjectCard.vue';
 const projects = [
     {
-        name:'学生管理系统',
+        name:'学生成绩管理系统',
         tech:'vue3',
-        desc:'学生管理系统是一个基于vue3的前端项目,用于管理学生信息',
+        desc:'学生成绩管理系统是一个基于vue3的前端项目,用于管理学生成绩信息',
         path:'/project/student'
     },
     {
         name:'在线购物系统',
         tech:'vue3',
         desc:'实现商品添加和价格计算',
-        path:'/project/shop'
+        path:'/project/shopping'
     },
     {
         name:'猜数字Game',

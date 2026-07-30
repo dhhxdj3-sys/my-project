@@ -4,7 +4,7 @@ import Blog from '../views/Blog.vue'
 import Skill from '../views/Skill.vue'
 import Project from '../views/Project.vue'
 import StudentSystem from '../components/StudentSystem.vue'
-import ShoopingList from '../components/ShooppingList.vue'
+import ShooppingList from '../components/ShooppingList.vue'
 import GuessNumber from '@/components/GuessNumber.vue'
 const router = createRouter({
     history:createWebHistory(),
@@ -31,7 +31,7 @@ const router = createRouter({
        },
        {
         path:"/project/shopping",
-        component:ShoopingList
+        component:ShooppingList
       },
       {
         path:"/project/guess",
