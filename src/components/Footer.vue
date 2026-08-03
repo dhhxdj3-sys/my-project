@@ -30,7 +30,7 @@
       <!-- 下半部分：版权与署名 -->
       <div class="footer-bottom">
         <p class="copyright">
-          © {{ currentYear }} 兰的技术空间. Built with Vue 3 & Vite.
+          © {{ currentYear }} Lan的技术空间. Built with Vue 3 & Vite.
         </p>
         <span class="footer-signature"></span>
       </div>

@@ -4,7 +4,7 @@
       <!-- 品牌/Logo 区域 -->
       <router-link to="/" class="brand-logo">
         
-        <span class="logo-text">我的<span class="highlight">技术空间</span></span>
+        <span class="highlight">神秘空间</span>
       </router-link>
 
       <!-- 导航菜单 -->
