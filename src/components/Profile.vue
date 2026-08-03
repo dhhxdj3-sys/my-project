@@ -1,6 +1,7 @@
 <script setup>
-// 保留你的头像引入（可以作为学习状态卡片里的小头像）
+
 import avatar from '../assets/avatar.png'
+
 </script>
 
 <template>
@@ -44,7 +45,7 @@ import avatar from '../assets/avatar.png'
       </div>
     </div>
 
-    <!-- 3. 当前学习状态小卡片 (保留了你的头像和萌新状态标识) -->
+   
     <div class="stats-card">
       <div class="stats-header">
         <img :src="avatar" alt="小头像" class="mini-avatar" />
