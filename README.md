@@ -1,38 +1,50 @@
-# Lan -bolg
+# 个人技术博客
 
-This template should help get you started developing with Vue 3 in Vite.
+## 项目介绍
 
-## Recommended IDE Setup
+基于 Vue3 开发的个人博客，
+用于记录前端学习过程和展示练习项目。
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
 
-## Recommended Browser Setup
+## 技术栈
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+- Vue3
+- JavaScript
+- Vite
+- Vue Router
 
-## Customize configuration
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+## 功能
 
-## Project Setup
+- 个人主页展示
+- 技能展示
+- 博客文章系统
+- 点赞 / 收藏 / 评论功能
+- 项目展示
 
-```sh
-npm install
-```
 
-### Compile and Hot-Reload for Development
+## 实践项目
 
-```sh
-npm run dev
-```
+### 猜数字小游戏
+- Vue3 + JavaScript
+- 输入判断、次数统计
 
-### Compile and Minify for Production
 
-```sh
-npm run build
-```
+### 学生成绩管理系统
+- Vue3 + Computed
+- 数据展示、成绩计算
+
+
+### 购物车系统
+- Vue3 + Ref + Computed
+- 商品添加、数量修改、价格计算
+
+
+## 部署
+
+Vercel
+
+
+## 作者
+
+兰玉刚
