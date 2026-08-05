@@ -3,6 +3,57 @@ import BlogCard from '../components/BlogCard.vue'
 import { ref } from 'vue'
 
 const blogs = ref([
+  // --- 2025年：HTML & JavaScript 基础阶段 ---
+  {
+    title: 'HTML5 语义化标签与网页结构搭建初探',
+    date: '2025-09-12',
+    desc: "开启前端学习的第一步！系统学习 HTML5 的语义化标签（header, nav, article, footer 等），理解 DOM 树的形成过程，掌握标准网页结构的编写规范。",
+    like: 0,
+    collect: false,
+    comments: []
+  },
+  {
+    title: 'JavaScript 基础语法与流程控制学习心得',
+    date: '2025-10-15',
+    desc: "记录 JavaScript 基础语法，包括变量定义（var、let、const 的区别）、数据类型转换、条件判断以及循环语句的使用，打牢 JS 编程基础。",
+    like: 0,
+    collect: false,
+    comments: []
+  },
+  {
+    title: 'JavaScript 函数与作用域深度解析',
+    date: '2025-11-08',
+    desc: "深入理解 JS 函数的概念，对比普通函数与 ES6 箭头函数的异同，学习局部/全局作用域以及作用域链对变量查找的影响。",
+    like: 0,
+    collect: false,
+    comments: []
+  },
+  {
+    title: '原生 JavaScript DOM 操作与事件监听实践',
+    date: '2025-12-20',
+    desc: "学习如何通过 JS 获取与操作 DOM 节点，掌握 click、keyup 等常见事件监听机制，动手编写第一个简单的原生 JS 网页交互小工具。",
+    like: 0,
+    collect: false,
+    comments: []
+  },
+  {
+    title: 'JavaScript 数组常用方法与对象操作总结',
+    date: '2026-03-10',
+    desc: "总结 JS 中常用的数组遍历与处理方法（forEach、map、filter、reduce），以及对象的属性读取与遍历，理解复杂数据结构的处理思路。",
+    like: 0,
+    collect: false,
+    comments: []
+  },
+  {
+    title: 'ES6+ 新特性学习：解构赋值、模板字符串与 Promise',
+    date: '2026-04-18',
+    desc: "梳理 ES6 核心新特性，重点掌握对象与数组的解构赋值、模板字符串语法，以及通过 Promise 和 async/await 处理异步代码的基本逻辑。",
+    like: 0,
+    collect: false,
+    comments: []
+  },
+
+  // --- 2026年：Vue 3 与工程化实战阶段 ---
   {
     title: 'Vue3组件通信详解：props 与 emit 的实践记录',
     date: '2026-06-18',

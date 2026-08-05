@@ -1,33 +1,35 @@
 <script setup>
-// 在原有数据结构上扩展一点点字段，让卡片内容更充实
+
 const skills = [
   {
     name: 'HTML5',
     level: 4,
     percent: 85,
-    icon: '🎨',
     desc: '熟练掌握语义化标签、Flexbox / Grid 布局与响应式排版。'
   },
   {
     name: 'CSS3',
-    level: 3,
-    percent: 80,
-    icon: '✨',
+    level: 1,
+    percent: 25,
     desc: '掌握 CSS 动画、过渡效果、Flex 弹性盒与毛玻璃质感设计。'
   },
   {
     name: 'JavaScript',
     level: 3,
     percent: 75,
-    icon: '💛',
     desc: '熟悉 ES6+ 语法、异步编程、DOM 操作与核心事件循环机制。'
   },
   {
     name: 'Vue.js 3',
     level: 3,
     percent: 80,
-    icon: '💚',
     desc: '熟练运用 Composition API、响应式原理与组件化构建。'
+  },
+  {
+    name: '二游高手',
+    level: 5,
+    percent: 100,
+    desc: '精通二次元手游逻辑与剧情体验，具备极高的角色理解与资源规划能力。'
   }
 ]
 </script>
@@ -44,7 +46,6 @@ const skills = [
     <div class="skills-grid">
       <div v-for="skill in skills" :key="skill.name" class="card">
         <div class="card-header">
-          <span class="skill-icon">{{ skill.icon }}</span>
           <h3 class="skill-title">{{ skill.name }}</h3>
         </div>
 
@@ -52,7 +53,14 @@ const skills = [
 
         <!-- 星星评价 + 进度条 -->
         <div class="card-footer">
-          <div class="stars">{{ "✨".repeat(skill.level) }}</div>
+          <div class="dots-rating">
+  <span 
+    v-for="i in 5" 
+    :key="i" 
+    class="dot" 
+    :class="{ 'is-active': i <= skill.level }"
+  ></span>
+</div>
           <div class="progress-bar">
             <div class="progress" :style="{ width: skill.percent + '%' }"></div>
           </div>
@@ -114,8 +122,8 @@ const skills = [
 /* 卡片主体 */
 .card {
   background: #ffffff;
-  border: 1px solid #e2e8f0; /* 修正原代码拼写错误 */
-  border-radius: 16px;       /* 修正原代码拼写错误 */
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -137,10 +145,6 @@ const skills = [
   margin-bottom: 12px;
 }
 
-.skill-icon {
-  font-size: 1.4rem;
-}
-
 .skill-title {
   font-size: 1.1rem;
   font-weight: 700;
@@ -160,9 +164,23 @@ const skills = [
   margin-top: auto;
 }
 
-.stars {
-  font-size: 0.85rem;
+.dots-rating {
+  display: flex;
+  gap: 6px;
   margin-bottom: 8px;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #e2e8f0; /* 未激活浅灰 */
+  transition: all 0.3s ease;
+}
+
+.dot.is-active {
+  background-color: #2563eb; /* 激活高亮蓝 */
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.4);
 }
 
 .progress-bar {
