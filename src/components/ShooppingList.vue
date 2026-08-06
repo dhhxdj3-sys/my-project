@@ -13,7 +13,7 @@ const goods = ref([
 
 const cart = ref([])
 
-// 逻辑完全保留你的精妙实现
+
 function addCart(item) {
   let old = cart.value.find(t => t.id === item.id)
   if (old) {
@@ -54,7 +54,7 @@ const todoPrice = computed(() => {
   <div class="shop-container">
     <!-- 头部标语 -->
     <div class="page-header">
-      <div class="badge">🛒 Online Store</div>
+      <div class="badge"> Online Store</div>
       <h1 class="page-title">在线 <span class="gradient-text">购物系统</span></h1>
       <p class="page-desc">基于 Vue 3 响应式计算属性打造的实战组件演示。</p>
     </div>
@@ -62,7 +62,7 @@ const todoPrice = computed(() => {
     <div class="shop-layout">
       <!-- 左侧：商品展示区 -->
       <div class="goods-section">
-        <h2 class="section-title">🍓 选购商品</h2>
+        <h2 class="section-title"> 选购商品</h2>
         <div class="goods-grid">
           <div v-for="item in goods" :key="item.id" class="good-card">
             <div class="good-icon">{{ item.icon }}</div>
@@ -80,13 +80,13 @@ const todoPrice = computed(() => {
       <!-- 右侧/下方：购物车清单 -->
       <div class="cart-section">
         <div class="cart-header">
-          <h2 class="section-title">🛒 购物车</h2>
+          <h2 class="section-title"> 购物车</h2>
           <span class="cart-badge">{{ cart.length }} 件商品</span>
         </div>
 
         <!-- 购物车为空时的提示 -->
         <div v-if="cart.length === 0" class="empty-cart">
-          <span class="empty-icon">🛍️</span>
+          <span class="empty-icon"></span>
           <p>购物车空空如也，快去挑选商品吧！</p>
         </div>
 

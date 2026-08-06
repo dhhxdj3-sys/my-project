@@ -27,7 +27,7 @@ const projects = [
   <div class="project-page">
     <!-- 1. 顶部 Header 提升质感 -->
     <div class="page-header">
-      <div class="badge">💻 Portfolio</div>
+      <div class="badge"> Portfolio</div>
       <h1 class="page-title">我的 <span class="gradient-text">实战项目</span></h1>
       <p class="page-desc">
         这里展示了我使用 Vue 3 核心技术栈构建的组件与小模块，点击“体验项目”可直达演示。

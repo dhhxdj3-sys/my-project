@@ -37,7 +37,7 @@ const skills = [
 <template>
   <div class="skill-container">
     <div class="header-area">
-      <div class="badge">🛠️ Tech Stack</div>
+      <div class="badge"> Tech Stack</div>
       <h2>我的 <span class="highlight">技术栈</span></h2>
       <p class="subtitle">用代码构建脚踏实地的能力，不断探索前端工程化实践。</p>
     </div>
