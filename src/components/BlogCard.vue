@@ -1,137 +1,586 @@
 <script setup>
-import { ref } from 'vue'
-
-const commentText = ref('')
-
-// 控制评论输入框与评论列表的折叠状态
-const showComment = ref(false)
-
-const emit = defineEmits([
-  "like",
-  "collect",
-  "comment"
-])
+import { ref, onMounted } from 'vue'
 
 const props = defineProps({
+  id: Number,
   title: String,
   date: String,
   desc: String,
   like: Number,
   collect: Boolean,
-  comments: Array
+  comments: Array,
+  content: String
 })
 
-function addLike() {
-  emit("like")
+const emit = defineEmits([
+  'read'
+])
+
+// ====================
+// 点赞
+// ====================
+
+// 点赞总数
+const likeCount = ref(props.like || 0)
+
+// 当前用户有没有点赞
+const isLiked = ref(false)
+
+
+// ====================
+// 收藏
+// ====================
+
+// 当前用户有没有收藏
+const isCollected = ref(props.collect || false)
+
+
+// ====================
+// 评论
+// ====================
+
+// 控制评论区域显示/隐藏
+const showComment = ref(false)
+
+// 评论输入框
+const commentText = ref('')
+
+// 从数据库获取的评论
+const commentList = ref([])
+
+
+// 获取 Token
+function getToken() {
+  return localStorage.getItem('token')
 }
 
-function addCollect() {
-  emit("collect")
+
+// ====================
+// 点赞 / 取消点赞
+// ====================
+
+async function addLike() {
+
+  const token = getToken()
+
+  // 没登录不能点赞
+  if (!token) {
+    alert('请先登录')
+    return
+  }
+
+  try {
+
+    const res = await fetch(
+      `http://localhost:3000/api/articles/${props.id}/like`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    )
+
+    const data = await res.json()
+
+    if (data.code === 200) {
+
+      // 更新自己的点赞状态
+      isLiked.value = data.data.liked
+
+      // 更新点赞数量
+      if (isLiked.value) {
+        likeCount.value++
+      } else {
+        likeCount.value--
+      }
+
+    } else {
+
+      alert(data.message)
+
+    }
+
+  } catch (error) {
+
+    console.error(error)
+    alert('点赞失败')
+
+  }
 }
 
-function addComment() {
+
+// ====================
+// 收藏 / 取消收藏
+// ====================
+
+async function addCollect() {
+
+  const token = getToken()
+
+  // 没登录不能收藏
+  if (!token) {
+    alert('请先登录')
+    return
+  }
+
+  try {
+
+    const res = await fetch(
+      `http://localhost:3000/api/articles/${props.id}/favorite`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    )
+
+    const data = await res.json()
+
+    if (data.code === 200) {
+
+      // 更新收藏状态
+      isCollected.value = data.data.favorited
+
+    } else {
+
+      alert(data.message)
+
+    }
+
+  } catch (error) {
+
+    console.error(error)
+    alert('收藏失败')
+
+  }
+}
+
+
+// ====================
+// 打开 / 关闭评论
+// ====================
+
+async function toggleComment() {
+
+  showComment.value = !showComment.value
+
+  // 打开评论区域时获取评论
+  if (showComment.value) {
+    await getComments()
+  }
+}
+
+
+// ====================
+// 获取评论
+// ====================
+
+async function getComments() {
+
+  try {
+
+    const res = await fetch(
+      `http://localhost:3000/api/articles/${props.id}/comments`
+    )
+
+    const data = await res.json()
+
+    if (data.code === 200) {
+
+      commentList.value = data.data
+
+    }
+
+  } catch (error) {
+
+    console.error(error)
+
+  }
+}
+
+
+// ====================
+// 发布评论
+// ====================
+
+async function addComment() {
+
+  const token = getToken()
+
+  // 没登录不能评论
+  if (!token) {
+    alert('请先登录')
+    return
+  }
+
+  // 空评论直接结束
   if (!commentText.value.trim()) {
     return
   }
-  emit("comment", commentText.value)
-  commentText.value = ""
+
+  try {
+
+    const res = await fetch(
+      `http://localhost:3000/api/articles/${props.id}/comments`,
+      {
+        method: 'POST',
+
+        headers: {
+          'Content-Type': 'application/json',
+
+          // 把 JWT 发送给后端
+          Authorization: `Bearer ${token}`
+        },
+
+        body: JSON.stringify({
+          content: commentText.value
+        })
+      }
+    )
+
+    const data = await res.json()
+
+    if (data.code === 201) {
+
+      // 清空输入框
+      commentText.value = ''
+
+      // 重新获取评论
+      await getComments()
+
+    } else {
+
+      alert(data.message)
+
+    }
+
+  } catch (error) {
+
+    console.error(error)
+    alert('评论失败')
+
+  }
 }
 
-function toggleComment() {
-  showComment.value = !showComment.value
+
+// ====================
+// 阅读全文
+// ====================
+
+function readArticle() {
+  emit('read', props.id)
 }
+
+
+// ====================
+// 页面加载时获取点赞状态
+// ====================
+
+onMounted(async () => {
+
+  const token = getToken()
+
+  // ====================
+  // 获取点赞状态
+  // ====================
+
+  try {
+
+    const headers = {}
+
+    if (token) {
+      headers.Authorization = `Bearer ${token}`
+    }
+
+    const res = await fetch(
+      `http://localhost:3000/api/articles/${props.id}/like`,
+      {
+        headers
+      }
+    )
+
+    const data = await res.json()
+
+    if (data.code === 200) {
+      likeCount.value = data.data.count
+      isLiked.value = data.data.liked
+    }
+
+  } catch (error) {
+
+    console.error('获取点赞状态失败：', error)
+
+  }
+
+
+  // ====================
+  // 获取收藏状态
+  // ====================
+
+  if (token) {
+
+    try {
+
+      const res = await fetch(
+        `http://localhost:3000/api/articles/${props.id}/favorite`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+
+      const data = await res.json()
+
+      if (data.code === 200) {
+        isCollected.value = data.data.favorited
+      }
+
+    } catch (error) {
+
+      console.error('获取收藏状态失败：', error)
+
+    }
+
+  }
+
+
+  // ====================
+  // 获取评论
+  // ====================
+
+  try {
+
+    await getComments()
+
+  } catch (error) {
+
+    console.error('获取评论失败：', error)
+
+  }
+
+})
 </script>
+
 
 <template>
   <div class="card">
-    <!-- 日期：浅灰 -->
+
+    <!-- 日期 -->
     <div class="card-meta">
       <span class="card-date">{{ date }}</span>
     </div>
 
-    <!-- 标题：深色，悬停蓝 -->
+
+    <!-- 标题 -->
     <h2 class="card-title">
       <a href="#" @click.prevent>{{ title }}</a>
     </h2>
 
-    <!-- 简介：中灰 -->
+
+    <!-- 简介 -->
     <p class="card-desc">
       {{ desc }}
     </p>
 
-    <!-- 底部扁平化操作栏 -->
+
+    <!-- 正文 -->
+    <p class="card-content">
+      {{ content }}
+    </p>
+
+
+    <!-- 底部操作栏 -->
     <div class="card-actions">
+
       <div class="left-actions">
-        <!-- 点赞图标按钮 -->
-        <button 
-          class="icon-btn" 
-          :class="{ 'is-active': like > 0 }" 
-          title="点赞" 
+
+        <!-- ==================== -->
+        <!-- 点赞 -->
+        <!-- ==================== -->
+
+        <button
+          class="icon-btn"
+          :class="{ 'is-active': isLiked }"
+          title="点赞"
           @click="addLike"
         >
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+
+          <svg
+            class="icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+
+            <path
+              d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"
+            ></path>
+
           </svg>
-          <span class="count">{{ like }}</span>
+
+          <span class="count">
+            {{ likeCount }}
+          </span>
+
         </button>
 
-        <!-- 收藏图标按钮 -->
-        <button 
-          class="icon-btn" 
-          :class="{ 'is-active': collect }" 
-          title="收藏" 
+
+        <!-- ==================== -->
+        <!-- 收藏 -->
+        <!-- ==================== -->
+
+        <button
+          class="icon-btn"
+          :class="{ 'is-active': isCollected }"
+          title="收藏"
           @click="addCollect"
         >
-          <svg class="icon" viewBox="0 0 24 24" :fill="collect ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="2">
-            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+
+          <svg
+            class="icon"
+            viewBox="0 0 24 24"
+            :fill="isCollected ? 'currentColor' : 'none'"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+
+            <polygon
+              points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+            ></polygon>
+
           </svg>
-          <span class="text">{{ collect ? '已收藏' : '收藏' }}</span>
+
+          <span class="text">
+            {{ isCollected ? '已收藏' : '收藏' }}
+          </span>
+
         </button>
 
-        <!-- 评论折叠开关图标按钮 -->
-        <button 
-          class="icon-btn" 
-          :class="{ 'is-active': showComment }" 
-          title="评论" 
+
+        <!-- ==================== -->
+        <!-- 评论 -->
+        <!-- ==================== -->
+
+        <button
+          class="icon-btn"
+          :class="{ 'is-active': showComment }"
+          title="评论"
           @click="toggleComment"
         >
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+
+          <svg
+            class="icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+
+            <path
+              d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+            ></path>
+
           </svg>
-          <span class="count">{{ comments ? comments.length : 0 }}</span>
+
+          <span class="count">
+            {{ commentList.length }}
+          </span>
+
         </button>
+
       </div>
 
-      <span class="read-more">阅读全文</span>
+
+      <!-- 阅读全文 -->
+      <span
+        class="read-more"
+        @click="readArticle"
+      >
+        阅读全文
+      </span>
+
     </div>
 
-    <!-- 收起的评论互动区 -->
+
+    <!-- ==================== -->
+    <!-- 评论区域 -->
+    <!-- ==================== -->
+
     <transition name="fade">
-      <div v-if="showComment" class="comment-drawer">
-        <!-- 评论输入框容器 -->
+
+      <div
+        v-if="showComment"
+        class="comment-drawer"
+      >
+
+        <!-- 评论输入框 -->
         <div class="comment-input-box">
-          <input 
-            v-model="commentText" 
-            type="text" 
-            placeholder="请输入你的评论..." 
+
+          <input
+            v-model="commentText"
+            type="text"
+            placeholder="请输入你的评论..."
             @keyup.enter="addComment"
           />
-          <button class="send-btn" :disabled="!commentText.trim()" @click="addComment">
+
+          <button
+            class="send-btn"
+            :disabled="!commentText.trim()"
+            @click="addComment"
+          >
             发送
           </button>
+
         </div>
+
 
         <!-- 评论列表 -->
-        <div v-if="comments && comments.length > 0" class="comment-list">
-          <div v-for="(item, index) in comments" :key="index" class="comment-item">
-            {{ item }}
+        <div
+          v-if="commentList.length > 0"
+          class="comment-list"
+        >
+
+          <div
+            v-for="item in commentList"
+            :key="item.id"
+            class="comment-item"
+          >
+
+            <strong>
+              {{ item.username }}
+            </strong>
+
+            <span>
+              {{ item.content }}
+            </span>
+
+            <small>
+              {{ item.created_at }}
+            </small>
+
           </div>
+
         </div>
+
+
+        <!-- 没有评论 -->
+        <div
+          v-else
+          class="comment-item"
+        >
+          暂时还没有评论
+        </div>
+
       </div>
+
     </transition>
+
   </div>
 </template>
-
 <style scoped>
 /* 1. 圆角卡片、微弱边框、平滑过渡 */
 .card {
@@ -312,5 +761,12 @@ function toggleComment() {
 .fade-leave-to {
   opacity: 0;
   transform: translateY(-4px);
+}
+.card-content {
+  font-size: 0.9rem;
+  color: #475569;
+  line-height: 1.7;
+  margin-bottom: 1.2rem;
+  white-space: pre-wrap;
 }
 </style>

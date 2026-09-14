@@ -1,26 +1,99 @@
+<script setup>
+import { ref } from 'vue'
+
+// 从 localStorage 获取当前登录用户
+const user = ref(JSON.parse(localStorage.getItem('user') || 'null'))
+
+// 退出登录
+function logout() {
+  localStorage.removeItem('token')
+  localStorage.removeItem('user')
+
+  user.value = null
+}
+</script>
+
 <template>
   <header class="navbar-header">
     <div class="navbar-container">
+
       <!-- 品牌/Logo 区域 -->
       <router-link to="/" class="brand-logo">
-        
         <span class="highlight">神秘空间</span>
       </router-link>
 
       <!-- 导航菜单 -->
       <nav class="nav-menu">
-        <router-link to="/" class="nav-item" exact-active-class="active">
+
+        <router-link
+          to="/"
+          class="nav-item"
+          exact-active-class="active"
+        >
           首页
         </router-link>
-        <router-link to="/blog" class="nav-item" active-class="active">
+
+        <router-link
+          to="/blog"
+          class="nav-item"
+          active-class="active"
+        >
           文章
         </router-link>
-        <router-link to="/project" class="nav-item" active-class="active">
+
+        <router-link
+          to="/project"
+          class="nav-item"
+          active-class="active"
+        >
           项目
         </router-link>
-        <router-link to="/skill" class="nav-item" active-class="active">
+
+        <router-link
+          to="/skill"
+          class="nav-item"
+          active-class="active"
+        >
           技能
         </router-link>
+
+
+        <!-- 没有登录 -->
+        <template v-if="!user">
+
+          <router-link
+            to="/login"
+            class="nav-item"
+            active-class="active"
+          >
+            登录
+          </router-link>
+
+          <router-link
+            to="/register"
+            class="nav-item"
+            active-class="active"
+          >
+            注册
+          </router-link>
+
+        </template>
+
+
+        <!-- 已经登录 -->
+        <template v-else>
+
+      
+
+          <span
+            class="nav-item"
+            @click="logout"
+          >
+            退出登录
+          </span>
+
+        </template>
+
       </nav>
     </div>
   </header>
